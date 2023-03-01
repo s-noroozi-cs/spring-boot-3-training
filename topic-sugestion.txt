@@ -1,0 +1,14 @@
+restful web service
+	standard ( http verb, status code, response body, ... )
+	advice, interceptor, web filter ( exception handling, error, custom headers, ... )
+	data transfer object ( map struct )
+	security (authentication, authorization)
+	documentation (open api, swagger)
+	
+graphQL web service
+	standard ( schema, mapping, ....)
+https://docs.spring.io/spring-graphql/docs/current/reference/html/	
+
+
+
+https://spring.io/projects
