@@ -1,13 +1,13 @@
-package com.springboot3.sampe.parent;
+package com.springboot3.sample.rest;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ParentApplication {
+public class RestApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ParentApplication.class, args);
+		SpringApplication.run(RestApplication.class, args);
 	}
 
 }

@@ -1,10 +1,10 @@
-package com.springboot3.sampe.parent;
+package com.springboot3.sample.rest;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ParentApplicationTests {
+class RestApplicationTests {
 
 	@Test
 	void contextLoads() {

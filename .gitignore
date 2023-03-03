@@ -26,3 +26,7 @@ slides.key
 source-codes/.idea/vcs.xml
 source-codes/.idea/misc.xml
 source-codes/.idea/workspace.xml
+source-codes/.idea/compiler.xml
+source-codes/.idea/jarRepositories.xml
+source-codes/.idea/modules.xml
+source-codes/spring-rest/rest.iml
