@@ -23,3 +23,6 @@
 hs_err_pid*
 slides.key
 .DS_Store
+source-codes/.idea/vcs.xml
+source-codes/.idea/misc.xml
+source-codes/.idea/workspace.xml
