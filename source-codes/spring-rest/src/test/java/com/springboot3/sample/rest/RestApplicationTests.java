@@ -27,12 +27,16 @@ public abstract class RestApplicationTests {
         return "http://localhost:%d%s".formatted(port, path);
     }
 
-    @Test
-    void contextLoads() {
-    }
-
     protected void logHttpResponse(HttpResponse<String> response) {
-        
+        log.info("""
+                
+                --- response ---
+                status code: %d
+                headers: %s
+                body: %s
+                """.formatted(response.statusCode()
+                , response.headers().map()
+                , response.body()));
     }
 
 }

@@ -20,6 +20,9 @@ public class CreateUserTests extends RestApplicationTests {
 
         HttpResponse response = HttpClient.newHttpClient()
                 .send(request, HttpResponse.BodyHandlers.ofString());
+
+        logHttpResponse(response);
+
         Assertions.assertEquals(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), response.statusCode());
     }
 
@@ -33,6 +36,8 @@ public class CreateUserTests extends RestApplicationTests {
 
         HttpResponse response = HttpClient.newHttpClient()
                 .send(request, HttpResponse.BodyHandlers.ofString());
+
+        logHttpResponse(response);
 
         Assertions.assertEquals(HttpStatus.BAD_REQUEST.value(), response.statusCode());
     }
