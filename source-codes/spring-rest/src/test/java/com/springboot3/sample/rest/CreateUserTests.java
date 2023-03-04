@@ -1,5 +1,6 @@
 package com.springboot3.sample.rest;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,8 @@ public class CreateUserTests extends RestApplicationTests {
 
         logHttpResponse(response);
 
-        Assertions.assertEquals(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value(), response.statusCode());
+        Assertions.assertEquals(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value()
+                , response.statusCode());
     }
 
     @Test
@@ -39,7 +41,44 @@ public class CreateUserTests extends RestApplicationTests {
 
         logHttpResponse(response);
 
-        Assertions.assertEquals(HttpStatus.BAD_REQUEST.value(), response.statusCode());
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST.value()
+                , response.statusCode());
+    }
+
+    @Test
+    void createUserMethodNotAllowedTest() throws Exception {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(makeRequestUrl(createUserPath)))
+                .PUT(HttpRequest.BodyPublishers.noBody())
+                .header("content-type", "application/json")
+                .build();
+
+        HttpResponse response = HttpClient.newHttpClient()
+                .send(request, HttpResponse.BodyHandlers.ofString());
+
+        logHttpResponse(response);
+
+        Assertions.assertEquals(HttpStatus.METHOD_NOT_ALLOWED.value()
+                , response.statusCode());
+    }
+
+    @Test
+    void createUserBadRequestValidationTest() throws Exception {
+        JSONObject body = new JSONObject();
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(makeRequestUrl(createUserPath)))
+                .POST(HttpRequest.BodyPublishers.ofString(body.toString()))
+                .header("content-type", "application/json")
+                .build();
+
+        HttpResponse response = HttpClient.newHttpClient()
+                .send(request, HttpResponse.BodyHandlers.ofString());
+
+        logHttpResponse(response);
+
+        Assertions.assertEquals(HttpStatus.BAD_REQUEST.value()
+                , response.statusCode());
     }
 
 }

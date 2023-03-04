@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.mapstruct.factory.Mappers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,7 +27,7 @@ public class UserController {
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     public ResponseEntity createUser(HttpServletRequest request,
-                                     @RequestBody UserCreateRequest userCreateRequest) {
+                                     @Validated @RequestBody UserCreateRequest userCreateRequest) {
 
         User user = userMapper.convertUserCreateModel(userCreateRequest);
         user.setId(userIdGenerator.incrementAndGet());
