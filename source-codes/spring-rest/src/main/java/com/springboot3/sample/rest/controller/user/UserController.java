@@ -3,10 +3,10 @@ package com.springboot3.sample.rest.controller.user;
 import com.springboot3.sample.rest.entity.User;
 import com.springboot3.sample.rest.mapper.UserMapper;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.mapstruct.factory.Mappers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,7 +27,7 @@ public class UserController {
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     public ResponseEntity createUser(HttpServletRequest request,
-                                     @Validated @RequestBody UserCreateRequest userCreateRequest) {
+                                     @Valid @RequestBody UserCreateRequest userCreateRequest) {
 
         User user = userMapper.convertUserCreateModel(userCreateRequest);
         user.setId(userIdGenerator.incrementAndGet());

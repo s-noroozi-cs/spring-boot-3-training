@@ -5,3 +5,4 @@ com/springboot3/sample/rest/entity/User.class
 com/springboot3/sample/rest/controller/user/UserCreateRequest.class
 com/springboot3/sample/rest/RestApplication.class
 com/springboot3/sample/rest/controller/user/UserController.class
+com/springboot3/sample/rest/advice/ExceptionHandlerAdvice.class
