@@ -10,7 +10,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class CreateUserTests extends RestApplicationTests {
+public class CreateUserTests extends UserTestHelper {
 
     @Test
     void createUserUnsupportedMediaTypeTest() throws Exception {
@@ -79,6 +79,20 @@ public class CreateUserTests extends RestApplicationTests {
 
         Assertions.assertEquals(HttpStatus.BAD_REQUEST.value()
                 , response.statusCode());
+    }
+
+    @Test
+    void createValidUserTest() throws Exception {
+        HttpResponse response = HttpClient.newHttpClient()
+                .send(makeValidCreateUserRequest(), HttpResponse.BodyHandlers.ofString());
+
+        logHttpResponse(response);
+
+        Assertions.assertEquals(HttpStatus.CREATED.value()
+                , response.statusCode());
+        Assertions.assertTrue(response.headers()
+                .firstValue("location")
+                .isPresent());
     }
 
 }

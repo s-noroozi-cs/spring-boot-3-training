@@ -7,10 +7,7 @@ import jakarta.validation.Valid;
 import org.mapstruct.factory.Mappers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.time.LocalDateTime;
@@ -22,14 +19,14 @@ import java.util.concurrent.atomic.AtomicLong;
 @RequestMapping("/api/v1/users")
 public class UserController {
     private static AtomicLong userIdGenerator = new AtomicLong();
-    private static Map<Long, Object> userStore = new ConcurrentHashMap<>();
+    private static Map<Long, User> userStore = new ConcurrentHashMap<>();
     private static UserMapper userMapper = Mappers.getMapper(UserMapper.class);
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     public ResponseEntity createUser(HttpServletRequest request,
                                      @Valid @RequestBody UserCreateRequest userCreateRequest) {
 
-        User user = userMapper.convertUserCreateModel(userCreateRequest);
+        User user = userMapper.userCreateModelToUser(userCreateRequest);
         user.setId(userIdGenerator.incrementAndGet());
         user.setCreationTime(LocalDateTime.now());
         userStore.put(user.getId(), user);
@@ -38,9 +35,12 @@ public class UserController {
         return ResponseEntity.created(URI.create(newUserUri)).build();
     }
 
-    @PostMapping(value = "/{user-id}", consumes = "application/json", produces = "application/json")
-    public ResponseEntity fetchUser(@PathVariable("/{user-id}") long userId) {
-        // for success operation
-        return null;
+    @GetMapping(value = "/{user-id}",  produces = "application/json")
+    public ResponseEntity fetchUser(@PathVariable("user-id") long userId) {
+        User user = userStore.get(userId);
+        if (user == null)
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(
+                userMapper.userToFetchUserResponse(user));
     }
 }

@@ -1,18 +1,19 @@
 package com.springboot3.sample.rest.mapper;
 
+import com.springboot3.sample.rest.controller.user.FetchUserResponse;
 import com.springboot3.sample.rest.controller.user.UserCreateRequest;
 import com.springboot3.sample.rest.entity.User;
 import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2023-03-04T20:57:20+0330",
+    date = "2023-03-05T21:39:55+0330",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.6 (GraalVM Community)"
 )
 public class UserMapperImpl implements UserMapper {
 
     @Override
-    public User convertUserCreateModel(UserCreateRequest request) {
+    public User userCreateModelToUser(UserCreateRequest request) {
         if ( request == null ) {
             return null;
         }
@@ -25,5 +26,23 @@ public class UserMapperImpl implements UserMapper {
         user.setPassword( request.getPassword() );
 
         return user;
+    }
+
+    @Override
+    public FetchUserResponse userToFetchUserResponse(User user) {
+        if ( user == null ) {
+            return null;
+        }
+
+        FetchUserResponse fetchUserResponse = new FetchUserResponse();
+
+        fetchUserResponse.setId( user.getId() );
+        fetchUserResponse.setName( user.getName() );
+        fetchUserResponse.setAddress( user.getAddress() );
+        fetchUserResponse.setUsername( user.getUsername() );
+        fetchUserResponse.setCreationTime( user.getCreationTime() );
+        fetchUserResponse.setLastModificationTime( user.getLastModificationTime() );
+
+        return fetchUserResponse;
     }
 }
