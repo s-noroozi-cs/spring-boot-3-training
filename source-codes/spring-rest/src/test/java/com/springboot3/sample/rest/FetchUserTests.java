@@ -9,7 +9,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class FetchUserTests extends RestApplicationTests {
+public class FetchUserTests extends UserTestHelper {
 
     @Test
     void fetchUserNotFoundExceptionTest() throws Exception {
@@ -31,10 +31,7 @@ public class FetchUserTests extends RestApplicationTests {
 
     @Test
     void fetchUserTest() throws Exception {
-
-
-
-        var userId = 0L;
+        var userId = createUser();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(
                         makeRequestUrl(fetchUserPath.formatted(userId))))
@@ -46,7 +43,6 @@ public class FetchUserTests extends RestApplicationTests {
 
         logHttpResponse(response);
 
-        Assertions.assertEquals(HttpStatus.NOT_FOUND.value()
-                , response.statusCode());
+        Assertions.assertEquals(HttpStatus.OK.value(), response.statusCode());
     }
 }

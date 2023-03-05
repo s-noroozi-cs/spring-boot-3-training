@@ -31,7 +31,7 @@ public class UserController {
         user.setCreationTime(LocalDateTime.now());
         userStore.put(user.getId(), user);
 
-        String newUserUri = request.getRequestURI() + "/" + user.getId();
+        String newUserUri = request.getRequestURL() + "/" + user.getId();
         return ResponseEntity.created(URI.create(newUserUri)).build();
     }
 
