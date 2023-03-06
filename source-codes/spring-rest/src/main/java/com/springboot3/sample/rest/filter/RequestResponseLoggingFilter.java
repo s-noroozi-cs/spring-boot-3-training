@@ -37,9 +37,9 @@ public class RequestResponseLoggingFilter implements Filter {
                     .responseHeaders(HttpUtil.extractHeaders(httpResponse));
 
         } catch (Throwable ex) {
-            builder.exception(ex);
+            builder.exceptionMsg(ex.getMessage());
         } finally {
-            builder.duration(Duration.ofMillis(System.currentTimeMillis() - startTime));
+            builder.elapseTime(System.currentTimeMillis() - startTime);
             HttpLogModel httpLogModel = builder.build();
             if (httpLogModel.hasError())
                 log.error(httpLogModel.asJsonString());

@@ -3,7 +3,6 @@ package com.springboot3.sample.rest.model;
 import com.google.gson.Gson;
 import lombok.Builder;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
@@ -17,14 +16,14 @@ public class HttpLogModel {
     private Integer statusCode;
     private Map<String, List<String>> responseHeaders;
     private String responseBody;
-    private Throwable exception;
-    private Duration duration;
+    private String exceptionMsg;
+    private long elapseTime;
 
     public String asJsonString() {
         return new Gson().toJson(this);
     }
 
     public boolean hasError() {
-        return exception != null;
+        return exceptionMsg != null && !exceptionMsg.isBlank();
     }
 }

@@ -23,8 +23,6 @@ public class FetchUserTests extends UserTestHelper {
         HttpResponse response = HttpClient.newHttpClient()
                 .send(request, HttpResponse.BodyHandlers.ofString());
 
-        logHttpResponse(response);
-
         Assertions.assertEquals(HttpStatus.NOT_FOUND.value()
                 , response.statusCode());
     }
@@ -40,8 +38,6 @@ public class FetchUserTests extends UserTestHelper {
 
         HttpResponse response = HttpClient.newHttpClient()
                 .send(request, HttpResponse.BodyHandlers.ofString());
-
-        logHttpResponse(response);
 
         Assertions.assertEquals(HttpStatus.OK.value(), response.statusCode());
     }

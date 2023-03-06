@@ -22,8 +22,6 @@ public class CreateUserTests extends UserTestHelper {
         HttpResponse response = HttpClient.newHttpClient()
                 .send(request, HttpResponse.BodyHandlers.ofString());
 
-        logHttpResponse(response);
-
         Assertions.assertEquals(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value()
                 , response.statusCode());
     }
@@ -39,8 +37,6 @@ public class CreateUserTests extends UserTestHelper {
         HttpResponse response = HttpClient.newHttpClient()
                 .send(request, HttpResponse.BodyHandlers.ofString());
 
-        logHttpResponse(response);
-
         Assertions.assertEquals(HttpStatus.BAD_REQUEST.value()
                 , response.statusCode());
     }
@@ -55,8 +51,6 @@ public class CreateUserTests extends UserTestHelper {
 
         HttpResponse response = HttpClient.newHttpClient()
                 .send(request, HttpResponse.BodyHandlers.ofString());
-
-        logHttpResponse(response);
 
         Assertions.assertEquals(HttpStatus.METHOD_NOT_ALLOWED.value()
                 , response.statusCode());
@@ -75,8 +69,6 @@ public class CreateUserTests extends UserTestHelper {
         HttpResponse response = HttpClient.newHttpClient()
                 .send(request, HttpResponse.BodyHandlers.ofString());
 
-        logHttpResponse(response);
-
         Assertions.assertEquals(HttpStatus.BAD_REQUEST.value()
                 , response.statusCode());
     }
@@ -85,8 +77,6 @@ public class CreateUserTests extends UserTestHelper {
     void createValidUserTest() throws Exception {
         HttpResponse<String> response = HttpClient.newHttpClient()
                 .send(makeValidCreateUserRequest(), HttpResponse.BodyHandlers.ofString());
-
-        logHttpResponse(response);
 
         Assertions.assertEquals(HttpStatus.CREATED.value()
                 , response.statusCode());
