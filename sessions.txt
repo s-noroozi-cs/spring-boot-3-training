@@ -1,1 +1,5 @@
-session 01	?.0 hours		16.0 - ?.0		mon 06 mar 2023	slide: ?
+session 01	2.0 hours		16.0 - 18.0		mon 06 mar 2023	slide: 15
+
+
+
+total (20): 2
