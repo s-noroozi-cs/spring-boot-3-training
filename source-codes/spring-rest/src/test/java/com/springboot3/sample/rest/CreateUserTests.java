@@ -83,7 +83,7 @@ public class CreateUserTests extends UserTestHelper {
 
     @Test
     void createValidUserTest() throws Exception {
-        HttpResponse response = HttpClient.newHttpClient()
+        HttpResponse<String> response = HttpClient.newHttpClient()
                 .send(makeValidCreateUserRequest(), HttpResponse.BodyHandlers.ofString());
 
         logHttpResponse(response);
@@ -93,6 +93,7 @@ public class CreateUserTests extends UserTestHelper {
         Assertions.assertTrue(response.headers()
                 .firstValue("location")
                 .isPresent());
+        Assertions.assertTrue(response.body().isBlank());
     }
 
 }

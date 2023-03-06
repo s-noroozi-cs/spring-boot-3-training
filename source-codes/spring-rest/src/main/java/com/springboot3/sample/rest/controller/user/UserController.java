@@ -1,6 +1,7 @@
 package com.springboot3.sample.rest.controller.user;
 
 import com.springboot3.sample.rest.entity.User;
+import com.springboot3.sample.rest.exception.NotFoundException;
 import com.springboot3.sample.rest.mapper.UserMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -39,7 +40,7 @@ public class UserController {
     public ResponseEntity fetchUser(@PathVariable("user-id") long userId) {
         User user = userStore.get(userId);
         if (user == null)
-            return ResponseEntity.notFound().build();
+            throw new NotFoundException("There is not exist any user with id: " + userId);
         return ResponseEntity.ok(
                 userMapper.userToFetchUserResponse(user));
     }

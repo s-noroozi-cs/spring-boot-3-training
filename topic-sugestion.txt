@@ -1,17 +1,51 @@
-Rest
+0- Rest
 	standard ( http verb, status code, response body, ... )
 	advice, interceptor, web filter ( exception handling, error, custom headers, ... )
 	data transfer object ( map struct )
 	security (authentication, authorization)
 	documentation (open api, swagger)
 	
-QraphQL
+1- QraphQL
 	standard ( schema, mapping, 
 	WebGraphQlInterceptor
 	Exception Resolution
 	GraphiQL - simple ui for manual ui or api siganture, test and etc
 
-Spring Data
+2- Spring Cloud
+	Distributed/versioned configuration
+	Service registration and discovery
+	Routing
+	Service-to-service calls
+	Load balancing
+	Circuit Breakers
+	Global locks
+	Leadership election and cluster state
+	Distributed messaging
+
+3- Spring Statemachine
+    Easy to use flat one level state machine for simple use cases.
+    Hierarchical state machine structure to ease complex state configuration.
+    State machine regions to provide even more complex state configurations.
+    Usage of triggers, transitions, guards and actions.
+    Type safe configuration adapter.
+    Builder pattern for easy instantiation for use outside of Spring Application context
+    Recipes for usual use cases
+    Distributed state machine based on a Zookeeper
+    State machine event listeners.
+    UML Eclipse Papyrus modeling.
+    Store machine config in a persistent storage.
+    Spring IOC integration to associate beans with a state machine.
+
+
+4- Spring Batch
+	Transaction management
+	Chunk based processing
+	Declarative I/O
+	Start/Stop/Restart
+	Retry/Skip
+	Web based administration interface
+
+5- Spring Data
 
 	Data JPA
 		Query Methods
@@ -33,42 +67,6 @@ Spring Data
 	Spring Data R2DBC ( Reactive Relational Database Connectivity)
 
 	Spring Data Envers
-
-
-Spring Cloud
-	Distributed/versioned configuration
-	Service registration and discovery
-	Routing
-	Service-to-service calls
-	Load balancing
-	Circuit Breakers
-	Global locks
-	Leadership election and cluster state
-	Distributed messaging
-
-Spring Statemachine
-    Easy to use flat one level state machine for simple use cases.
-    Hierarchical state machine structure to ease complex state configuration.
-    State machine regions to provide even more complex state configurations.
-    Usage of triggers, transitions, guards and actions.
-    Type safe configuration adapter.
-    Builder pattern for easy instantiation for use outside of Spring Application context
-    Recipes for usual use cases
-    Distributed state machine based on a Zookeeper
-    State machine event listeners.
-    UML Eclipse Papyrus modeling.
-    Store machine config in a persistent storage.
-    Spring IOC integration to associate beans with a state machine.
-
-
-Spring Batch
-	Transaction management
-	Chunk based processing
-	Declarative I/O
-	Start/Stop/Restart
-	Retry/Skip
-	Web based administration interface
-
 
 
 

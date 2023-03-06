@@ -3,4 +3,5 @@
 /Users/saeid/github/spring-boot-3-training/source-codes/spring-rest/src/main/java/com/springboot3/sample/rest/entity/User.java
 /Users/saeid/github/spring-boot-3-training/source-codes/spring-rest/src/main/java/com/springboot3/sample/rest/controller/user/UserCreateRequest.java
 /Users/saeid/github/spring-boot-3-training/source-codes/spring-rest/src/main/java/com/springboot3/sample/rest/controller/user/UserController.java
+/Users/saeid/github/spring-boot-3-training/source-codes/spring-rest/src/main/java/com/springboot3/sample/rest/controller/user/FetchUserResponse.java
 /Users/saeid/github/spring-boot-3-training/source-codes/spring-rest/src/main/java/com/springboot3/sample/rest/RestApplication.java
