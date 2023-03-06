@@ -21,6 +21,7 @@
         <java.version>17</java.version>
         <mapstruct.version>1.5.3.Final</mapstruct.version>
         <maven.compiler.plugin>3.5.1</maven.compiler.plugin>
+        <gson.version>2.10.1</gson.version>
     </properties>
 
     <modules>
@@ -34,6 +35,12 @@
                 <artifactId>mapstruct</artifactId>
                 <version>${mapstruct.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>${gson.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
