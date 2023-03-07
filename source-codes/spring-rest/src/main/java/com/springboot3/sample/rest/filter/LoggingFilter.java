@@ -34,13 +34,16 @@ public class LoggingFilter implements Filter {
 
             filterChain.doFilter(servletRequest, servletResponse);
 
-            builder.statusCode(httpResponse.getStatus())
-                    .responseHeaders(HttpUtil.extractHeaders(httpResponse));
-
         } catch (Throwable ex) {
             builder.exceptionMsg(ex.getMessage());
         } finally {
-            builder.elapseTime(System.currentTimeMillis() - startTime);
+
+            builder
+                    .elapseTime(System.currentTimeMillis() - startTime)
+                    .statusCode(httpResponse.getStatus())
+                    .responseHeaders(HttpUtil.extractHeaders(httpResponse));
+
+
             HttpLogModel httpLogModel = builder.build();
             if (httpLogModel.hasError())
                 log.error(httpLogModel.asJsonString());

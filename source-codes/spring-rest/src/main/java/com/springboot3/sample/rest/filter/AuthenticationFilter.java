@@ -11,6 +11,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @Component
 @Order(2)
@@ -24,9 +25,9 @@ public class AuthenticationFilter implements Filter {
         var httpRequest = (HttpServletRequest) servletRequest;
         var httpResponse = (HttpServletResponse) servletResponse;
 
-        var apiKey = httpRequest.getHeader(HeaderNames.AUTHORIZATION);
+        var apiKey = Optional.ofNullable(httpRequest.getHeader(HeaderNames.AUTHORIZATION));
 
-        if (ApiKeys.roleMapping.containsKey(apiKey)) {
+        if (apiKey.isPresent() && ApiKeys.roleMapping.containsKey(apiKey)) {
 
             httpRequest.setAttribute(AttributeNames.CURRENT_USER_ROLES,
                     ApiKeys.roleMapping.get(apiKey));
@@ -34,6 +35,7 @@ public class AuthenticationFilter implements Filter {
             filterChain.doFilter(servletRequest, servletResponse);
 
         } else {
+            log.error("There is not exist any api-key in authorization header.");
             httpResponse.setStatus(401);
             httpResponse.getOutputStream().write("UN_AUTHORIZED".getBytes());
         }
