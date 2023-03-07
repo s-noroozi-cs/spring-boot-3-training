@@ -1,8 +1,10 @@
 package com.springboot3.sample.rest.controller.user;
 
+import com.springboot3.sample.rest.annotation.Authorization;
 import com.springboot3.sample.rest.entity.User;
 import com.springboot3.sample.rest.exception.NotFoundException;
 import com.springboot3.sample.rest.mapper.UserMapper;
+import com.springboot3.sample.rest.model.RoleNames;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.mapstruct.factory.Mappers;
@@ -24,6 +26,7 @@ public class UserController {
     private static UserMapper userMapper = Mappers.getMapper(UserMapper.class);
 
     @PostMapping(consumes = "application/json", produces = "application/json")
+    @Authorization(RoleNames.CREATE_USER)
     public ResponseEntity createUser(HttpServletRequest request,
                                      @Valid @RequestBody UserCreateRequest userCreateRequest) {
 
@@ -36,7 +39,7 @@ public class UserController {
         return ResponseEntity.created(URI.create(newUserUri)).build();
     }
 
-    @GetMapping(value = "/{user-id}",  produces = "application/json")
+    @GetMapping(value = "/{user-id}", produces = "application/json")
     public ResponseEntity fetchUser(@PathVariable("user-id") long userId) {
         User user = userStore.get(userId);
         if (user == null)

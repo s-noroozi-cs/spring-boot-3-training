@@ -1,0 +1,16 @@
+.DS_Store
+
+**/HELP.md
+**/target/**/*
+
+
+### IntelliJ IDEA ###
+**/.idea
+**/*.iws
+**/*.iml
+**/*.ipr
+
+
+**/*.key
+source-codes/spring-rest/target/test-classes/application.yml
+source-codes/spring-rest/target/test-classes/application.yml
