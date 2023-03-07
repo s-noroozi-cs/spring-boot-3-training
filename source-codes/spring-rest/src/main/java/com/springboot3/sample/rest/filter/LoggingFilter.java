@@ -10,15 +10,16 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.time.Duration;
 
 @Component
 @Order(1)
 @Slf4j
-public class RequestResponseLoggingFilter implements Filter {
+public class LoggingFilter implements Filter {
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+    public void doFilter(ServletRequest servletRequest,
+                         ServletResponse servletResponse,
+                         FilterChain filterChain) throws IOException, ServletException {
 
         var startTime = System.currentTimeMillis();
         var httpRequest = (HttpServletRequest) servletRequest;

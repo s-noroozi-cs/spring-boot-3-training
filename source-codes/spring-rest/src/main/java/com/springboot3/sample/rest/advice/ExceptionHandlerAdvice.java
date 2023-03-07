@@ -1,6 +1,7 @@
 package com.springboot3.sample.rest.advice;
 
 import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.springboot3.sample.rest.exception.ForbiddenException;
 import com.springboot3.sample.rest.exception.NotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,11 @@ public class ExceptionHandlerAdvice {
     @ExceptionHandler(value = NotFoundException.class)
     protected ResponseEntity<Object> handleNotFoundException(NotFoundException ex) {
         return globalHandler(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(value = ForbiddenException.class)
+    protected ResponseEntity<Object> handleForbiddenException(NotFoundException ex) {
+        return globalHandler(ex.getMessage(), HttpStatus.FORBIDDEN);
     }
 
     private ResponseEntity<Object> globalHandler(String data, HttpStatus status) {
