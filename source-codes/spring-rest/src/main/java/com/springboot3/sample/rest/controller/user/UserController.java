@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.mapstruct.factory.Mappers;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -26,7 +25,6 @@ public class UserController {
     private static UserMapper userMapper = Mappers.getMapper(UserMapper.class);
 
     @PostMapping(consumes = "application/json", produces = "application/json")
-    @Authorization(RoleNames.CREATE_USER)
     public ResponseEntity createUser(HttpServletRequest request,
                                      @Valid @RequestBody UserCreateRequest userCreateRequest) {
 
@@ -46,5 +44,14 @@ public class UserController {
             throw new NotFoundException("There is not exist any user with id: " + userId);
         return ResponseEntity.ok(
                 userMapper.userToFetchUserResponse(user));
+    }
+
+    @DeleteMapping(value = "/{user-id}")
+    @Authorization(RoleNames.DELETE_USER)
+    public ResponseEntity removeUser(@PathVariable("user-id") long userId) {
+        User user = userStore.get(userId);
+        if (user == null)
+            throw new NotFoundException("There is not exist any user with id: " + userId);
+        return ResponseEntity.noContent().build();
     }
 }

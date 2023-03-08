@@ -35,7 +35,7 @@ public class ExceptionHandlerAdvice {
     }
 
     @ExceptionHandler(value = ForbiddenException.class)
-    protected ResponseEntity<Object> handleForbiddenException(NotFoundException ex) {
+    protected ResponseEntity<Object> handleForbiddenException(ForbiddenException ex) {
         return globalHandler(ex.getMessage(), HttpStatus.FORBIDDEN);
     }
 

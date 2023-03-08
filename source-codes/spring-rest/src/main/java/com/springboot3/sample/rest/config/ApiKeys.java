@@ -6,9 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 public interface ApiKeys {
+    String CREATE_USER_API_KEY = "create-user-2023-03-07";
+    String FETCH_USER_API_KEY = "fetch-user-2023-03-07";
+    String DELETE_USER_API_KEY = "delete-user-2023-03-08";
+
     Map<String, List<RoleNames>> roleMapping = Map.of(
-            "create-user-2023-03-07",List.of(RoleNames.CREATE_USER)
-            ,"fetch-user-2023-03-07",List.of(RoleNames.FETCH_USER)
-            ,"admin-2023-03-07",List.of(RoleNames.values())
-    );
+            CREATE_USER_API_KEY, List.of(RoleNames.CREATE_USER)
+            , FETCH_USER_API_KEY, List.of(RoleNames.FETCH_USER)
+            , DELETE_USER_API_KEY, List.of(RoleNames.DELETE_USER));
 }

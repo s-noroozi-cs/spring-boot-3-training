@@ -40,9 +40,9 @@ public class AuthenticationFilter implements Filter {
     }
 
     private boolean checkApiToken(HttpServletRequest httpRequest) {
-        var apiKey = Optional.ofNullable(httpRequest.getHeader(HeaderNames.AUTHORIZATION));
+        var apiKey = httpRequest.getHeader(HeaderNames.AUTHORIZATION);
 
-        if (apiKey.isPresent() && ApiKeys.roleMapping.containsKey(apiKey)) {
+        if (apiKey != null && ApiKeys.roleMapping.containsKey(apiKey)) {
 
             httpRequest.setAttribute(AttributeNames.CURRENT_USER_ROLES,
                     ApiKeys.roleMapping.get(apiKey));

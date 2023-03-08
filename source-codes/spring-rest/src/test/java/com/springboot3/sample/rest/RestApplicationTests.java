@@ -10,7 +10,8 @@ import java.net.http.HttpResponse;
 @Slf4j
 public abstract class RestApplicationTests {
     protected final String createUserPath = "/api/v1/users";
-    protected final String fetchUserPath = "/api/v1/users/%d";
+    protected final String fetchUserPath = createUserPath + "/%d";
+    protected final String deleteUserPath = fetchUserPath;
 
     @LocalServerPort
     private int port;
