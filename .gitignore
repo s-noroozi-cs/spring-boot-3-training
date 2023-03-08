@@ -8,3 +8,4 @@ source-codes/.idea/misc.xml
 source-codes/.idea/vcs.xml
 *.class
 **/target/*
+slides.key
