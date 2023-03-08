@@ -7,6 +7,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,39 @@ import java.util.Optional;
 @Slf4j
 public class AuthenticationFilter implements Filter {
 
+    private String[] ignoreUrls;
+
+    public AuthenticationFilter(@Value("${spring.security.auth.ignore.urls}")
+                                String[] ignoreUrls) {
+        this.ignoreUrls = ignoreUrls;
+    }
+
+    private boolean checkIgnoreUrls(HttpServletRequest httpRequest) {
+        String currentRequestUri = httpRequest.getRequestURI();
+        boolean ignoreThisRequest = false;
+        for (String uri : ignoreUrls) {
+            if (currentRequestUri.matches(uri)) {
+                log.info("based on system configuration [ignore urls: " + ignoreUrls + "]" +
+                        ",ignore authentication for this request url: " + currentRequestUri);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean checkApiToken(HttpServletRequest httpRequest) {
+        var apiKey = Optional.ofNullable(httpRequest.getHeader(HeaderNames.AUTHORIZATION));
+
+        if (apiKey.isPresent() && ApiKeys.roleMapping.containsKey(apiKey)) {
+
+            httpRequest.setAttribute(AttributeNames.CURRENT_USER_ROLES,
+                    ApiKeys.roleMapping.get(apiKey));
+            return true;
+        }
+
+        return false;
+    }
+
     @Override
     public void doFilter(ServletRequest servletRequest,
                          ServletResponse servletResponse,
@@ -25,19 +59,16 @@ public class AuthenticationFilter implements Filter {
         var httpRequest = (HttpServletRequest) servletRequest;
         var httpResponse = (HttpServletResponse) servletResponse;
 
-        var apiKey = Optional.ofNullable(httpRequest.getHeader(HeaderNames.AUTHORIZATION));
-
-        if (apiKey.isPresent() && ApiKeys.roleMapping.containsKey(apiKey)) {
-
-            httpRequest.setAttribute(AttributeNames.CURRENT_USER_ROLES,
-                    ApiKeys.roleMapping.get(apiKey));
+        if (checkIgnoreUrls(httpRequest) || checkApiToken(httpRequest)) {
 
             filterChain.doFilter(servletRequest, servletResponse);
 
         } else {
+
             log.error("There is not exist any api-key in authorization header.");
             httpResponse.setStatus(401);
             httpResponse.getOutputStream().write("UN_AUTHORIZED".getBytes());
+
         }
     }
 }

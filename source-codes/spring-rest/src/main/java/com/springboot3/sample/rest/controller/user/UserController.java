@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-@Controller
+@RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
     private static AtomicLong userIdGenerator = new AtomicLong();
