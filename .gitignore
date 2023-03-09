@@ -9,3 +9,4 @@ source-codes/.idea/vcs.xml
 *.class
 **/target/*
 slides.key
+source-codes/spring-graphql/.DS_Store
