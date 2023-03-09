@@ -1,2 +1,6 @@
 https://aws.amazon.com/what-is/restful-api/
 
+https://graphql.org/
+
+https://docs.spring.io/spring-graphql/docs/current/reference/html
+
