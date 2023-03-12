@@ -6,7 +6,7 @@
 	documentation (open api, swagger)
 	
 1- QraphQL
-	standard ( schema, mapping, 
+	standard ( schema, mapping)
 	WebGraphQlInterceptor
 	Exception Resolution
 	GraphiQL - simple ui for manual ui or api siganture, test and etc
