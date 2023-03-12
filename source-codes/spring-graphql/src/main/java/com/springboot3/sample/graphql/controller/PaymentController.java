@@ -4,7 +4,9 @@ import com.springboot3.sample.graphql.mapper.PaymentMapper;
 import com.springboot3.sample.graphql.model.Account;
 import com.springboot3.sample.graphql.model.Payment;
 import com.springboot3.sample.graphql.model.Person;
-import com.springboot3.sample.graphql.service.PaymentService;
+import com.springboot3.sample.graphql.repository.AccountRepository;
+import com.springboot3.sample.graphql.repository.PaymentRepository;
+import com.springboot3.sample.graphql.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Pageable;
@@ -12,20 +14,21 @@ import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
 public class PaymentController {
-    private final PaymentService paymentService;
+    private final PaymentRepository paymentRepository;
+    private final PersonRepository personRepository;
+    private final AccountRepository accountRepository;
+
     private static PaymentMapper paymentMapper = Mappers.getMapper(PaymentMapper.class);
 
     @QueryMapping
     public List<Payment> fetchPayments() {
-        return paymentService.fetchPaymentEntity(
+        return paymentRepository.findAll(
                         Pageable.ofSize(10).withPage(0))
                 .stream()
                 .map(paymentMapper::toModel)
@@ -34,24 +37,33 @@ public class PaymentController {
 
     @SchemaMapping
     public Person payer(Payment payment) {
-        return Person.builder()
-                .name("test payer")
-                .id((int) System.currentTimeMillis() % 100)
-                .phone(LocalDateTime.now() + "")
-                .build();
+        return fetchPerson(payment.getPayer().getId());
     }
 
     @SchemaMapping
     public Person payee(Payment payment) {
-        return Person.builder()
-                .name("test payee")
-                .id((int) System.currentTimeMillis() % 100)
-                .phone(LocalDateTime.now() + "")
-                .build();
+        return fetchPerson(payment.getPayee().getId());
+    }
+
+    private Person fetchPerson(long personId) {
+        return personRepository
+                .findById(personId)
+                .map(paymentMapper::toModel)
+                .orElseGet(Person::new);
     }
 
     @SchemaMapping
     public List<Account> accounts(Person person) {
-        return List.of();
+        return null;
+    }
+
+    @SchemaMapping
+    public Account payerAccount(Payment payment) {
+        return null;
+    }
+
+    @SchemaMapping
+    public Account payeeAccount(Payment payment) {
+        return null;
     }
 }

@@ -13,10 +13,10 @@ insert into person_entity (id,account_ids,address,name,phone)
                     values(202,102,'tabriz','ahmad','0901');
 
 insert into payment_entity (id,amount,date_time,payee_person_id,payer_person_id)
-                    values(301,111,CURRENT_TIMESTAMP,100,101);
+                    values(301,111,CURRENT_TIMESTAMP,200,201);
 insert into payment_entity (id,amount,date_time,payee_person_id,payer_person_id)
-                    values(302,222,CURRENT_TIMESTAMP,101,102);
+                    values(302,222,CURRENT_TIMESTAMP,201,202);
 insert into payment_entity (id,amount,date_time,payee_person_id,payer_person_id)
-                    values(303,333,CURRENT_TIMESTAMP,102,100);
+                    values(303,333,CURRENT_TIMESTAMP,202,200);
 
 

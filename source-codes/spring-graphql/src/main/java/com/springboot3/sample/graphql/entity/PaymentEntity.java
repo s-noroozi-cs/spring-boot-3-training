@@ -20,7 +20,9 @@ public class PaymentEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private long payerPersonId;
+    private long payerAccountId;
     private long payeePersonId;
+    private long payeeAccountId;
     private BigDecimal amount;
     private LocalDateTime dateTime;
 }

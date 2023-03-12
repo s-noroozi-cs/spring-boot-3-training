@@ -1,6 +1,7 @@
 package com.springboot3.sample.graphql.mapper;
 
 import com.springboot3.sample.graphql.entity.PaymentEntity;
+import com.springboot3.sample.graphql.entity.PersonEntity;
 import com.springboot3.sample.graphql.model.Payment;
 import com.springboot3.sample.graphql.model.Person;
 import org.mapstruct.Mapper;
@@ -18,5 +19,6 @@ public interface PaymentMapper {
         return Person.builder().id(personId).build();
     }
 
+    Person toModel(PersonEntity entity);
 
 }
