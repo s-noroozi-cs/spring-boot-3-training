@@ -9,7 +9,7 @@ type Person{
     name: String
     address: String
     phone: String
-    accounts: [Account]
+    account: Account
 }
 
 type Payment{

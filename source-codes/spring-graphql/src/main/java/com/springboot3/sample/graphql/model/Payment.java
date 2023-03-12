@@ -14,9 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 public class Payment {
     private Person payer;
-    private Account payerAccount;
     private Person payee;
-    private Account payeeAccount;
     private BigDecimal amount;
     private LocalDateTime dateTime;
 }

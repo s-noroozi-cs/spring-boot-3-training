@@ -21,5 +21,5 @@ public class PersonEntity {
     private String name;
     private String address;
     private String phone;
-    private List<Long> accountIds;
+    private Long accountId;
 }

@@ -1,5 +1,6 @@
 package com.springboot3.sample.graphql.controller;
 
+import com.springboot3.sample.graphql.entity.PersonEntity;
 import com.springboot3.sample.graphql.mapper.PaymentMapper;
 import com.springboot3.sample.graphql.model.Account;
 import com.springboot3.sample.graphql.model.Payment;
@@ -53,17 +54,13 @@ public class PaymentController {
     }
 
     @SchemaMapping
-    public List<Account> accounts(Person person) {
-        return null;
+    public Account account(Person person) {
+        return personRepository
+                .findById(person.getId())
+                .map(PersonEntity::getAccountId)
+                .flatMap(accountRepository::findById)
+                .map(paymentMapper::toModel)
+                .orElseGet(Account::new);
     }
 
-    @SchemaMapping
-    public Account payerAccount(Payment payment) {
-        return null;
-    }
-
-    @SchemaMapping
-    public Account payeeAccount(Payment payment) {
-        return null;
-    }
 }
