@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Person {
-    private int id;
+    private long id;
     private String name;
     private String address;
     private String phone;
