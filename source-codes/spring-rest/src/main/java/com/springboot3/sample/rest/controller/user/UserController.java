@@ -52,6 +52,7 @@ public class UserController {
         User user = userStore.get(userId);
         if (user == null)
             throw new NotFoundException("There is not exist any user with id: " + userId);
+        userStore.remove(userId);
         return ResponseEntity.noContent().build();
     }
 }

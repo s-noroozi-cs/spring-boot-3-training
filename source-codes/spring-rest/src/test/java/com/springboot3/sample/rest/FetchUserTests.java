@@ -1,5 +1,7 @@
 package com.springboot3.sample.rest;
 
+import com.springboot3.sample.rest.config.ApiKeys;
+import com.springboot3.sample.rest.config.HeaderNames;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,7 @@ public class FetchUserTests extends UserTestHelper {
                 .uri(URI.create(
                         makeRequestUrl(fetchUserPath.formatted(userId))))
                 .GET()
+                .header(HeaderNames.AUTHORIZATION, ApiKeys.TEST_USER_API_KEY)
                 .build();
 
         HttpResponse response = HttpClient.newHttpClient()
@@ -34,6 +37,7 @@ public class FetchUserTests extends UserTestHelper {
                 .uri(URI.create(
                         makeRequestUrl(fetchUserPath.formatted(userId))))
                 .GET()
+                .header(HeaderNames.AUTHORIZATION, ApiKeys.TEST_USER_API_KEY)
                 .build();
 
         HttpResponse response = HttpClient.newHttpClient()

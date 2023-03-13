@@ -67,12 +67,13 @@ public class DeleteUserTests extends UserTestHelper {
         HttpRequest deleteUser = HttpRequest.newBuilder()
                 .uri(URI.create(makeRequestUrl(deleteUserPath.formatted(userId))))
                 .header(HeaderNames.AUTHORIZATION, ApiKeys.DELETE_USER_API_KEY)
+//                .header(HeaderNames.AUTHORIZATION, ApiKeys.TEST_USER_API_KEY)
                 .DELETE()
                 .build();
 
         HttpResponse response = HttpClient.newBuilder().build()
                 .send(deleteUser, HttpResponse.BodyHandlers.ofString());
 
-        Assertions.assertEquals(404,response.statusCode());
+        Assertions.assertEquals(204,response.statusCode());
     }
 }

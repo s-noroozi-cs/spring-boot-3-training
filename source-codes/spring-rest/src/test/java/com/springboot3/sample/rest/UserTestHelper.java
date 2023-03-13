@@ -1,5 +1,7 @@
 package com.springboot3.sample.rest;
 
+import com.springboot3.sample.rest.config.ApiKeys;
+import com.springboot3.sample.rest.config.HeaderNames;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.http.HttpHeaders;
@@ -23,6 +25,7 @@ public abstract class UserTestHelper extends RestApplicationTests {
                 .uri(URI.create(makeRequestUrl(createUserPath)))
                 .POST(HttpRequest.BodyPublishers.ofString(body.toString()))
                 .header("content-type", "application/json")
+                .header(HeaderNames.AUTHORIZATION, ApiKeys.TEST_USER_API_KEY)
                 .build();
     }
 
