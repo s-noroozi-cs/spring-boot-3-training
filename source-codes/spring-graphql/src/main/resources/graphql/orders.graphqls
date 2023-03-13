@@ -1,0 +1,13 @@
+type Order{
+    id: String
+    name: String
+    count: Int
+}
+
+extend type Query{
+    fetchMyOrder : [Order]
+}
+
+extend type Mutation {
+    createOrder(name: String,count:Int): Order
+}
