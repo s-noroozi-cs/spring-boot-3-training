@@ -1,0 +1,9 @@
+extend type Mutation {
+    register(name: String, mobile: String): Register
+}
+
+type Register{
+    id: String
+    name: String
+    mobile: String
+}
