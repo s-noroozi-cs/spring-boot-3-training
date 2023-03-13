@@ -1,0 +1,12 @@
+extend type Query{
+    fetchAllBanks : [Bank]
+}
+
+type Bank{
+    name: String
+    bic: String
+}
+
+type Mutation{
+    createBank(name: String, bic: String) : Bank
+}
