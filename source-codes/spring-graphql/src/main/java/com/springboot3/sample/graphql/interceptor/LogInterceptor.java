@@ -23,6 +23,7 @@ public class LogInterceptor implements WebGraphQlInterceptor {
                 execution id: %s
                 operation name: %s
                 variables: %s
+                
                 """.formatted(
                 request.getHeaders().toSingleValueMap(),
                 request.getUri(),
@@ -32,7 +33,7 @@ public class LogInterceptor implements WebGraphQlInterceptor {
                 request.getOperationName(),
                 request.getVariables()
         );
-
+        log.info(graphqlRequestLog);
         return chain.next(request);
     }
 
