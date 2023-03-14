@@ -7,21 +7,37 @@ spring:
     name: gateway-service
 
   cloud:
-    discovery:
-      locator.enabled: true
+    discovery.locator.enabled: true
+
     gateway:
+
       globalcors:
         cors-configurations:
           '[/**]':
             allowedOrigins: "*"
             allowedMethods: "*"
       routes:
+
         - id: customer-service
           uri: lb://customer-service
           predicates:
             - Path=/customer-service/**
           filters:
             - RewritePath=/customer-service/(?<segment>.*),/$\{segment}
+
+        - id: merchant-service
+          uri: lb://merchant-service
+          predicates:
+            - Path=/merchant-service/**
+          filters:
+            - RewritePath=/merchant-service/(?<segment>.*),/$\{segment}
+
+        - id: payment-service
+          uri: lb://payment-service
+          predicates:
+            - Path=/payment-service/**
+          filters:
+            - RewritePath=/payment-service/(?<segment>.*),/$\{segment}
 
     consul:
       host: localhost

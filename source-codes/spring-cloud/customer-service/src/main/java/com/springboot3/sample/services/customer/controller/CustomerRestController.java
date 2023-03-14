@@ -1,17 +1,16 @@
 package com.springboot3.sample.services.customer.controller;
 
+import com.springboot3.sample.services.common.api.CustomerApiSignature;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/customers")
-public class CustomerRestController {
+public class CustomerRestController implements CustomerApiSignature {
 
-    @GetMapping("/{id}")
-    public ResponseEntity getCustomer(@PathVariable("id") String id){
-        return ResponseEntity.ok("customer with id: " + id);
+    @Override
+    public ResponseEntity fetchCustomer(long id) {
+        return ResponseEntity
+                .ok("load customer with %d successfully."
+                        .formatted(id));
     }
 }
