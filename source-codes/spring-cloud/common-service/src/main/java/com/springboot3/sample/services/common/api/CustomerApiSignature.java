@@ -7,5 +7,5 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface CustomerApiSignature {
 
     @GetMapping("/api/v1/customers/{id}")
-    ResponseEntity fetchCustomer(@PathVariable("id") long id);
+    ResponseEntity<String> fetchCustomer(@PathVariable("id") long id);
 }

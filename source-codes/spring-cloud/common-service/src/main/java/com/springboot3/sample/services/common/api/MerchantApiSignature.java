@@ -7,5 +7,5 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface MerchantApiSignature {
 
     @GetMapping("/api/v1/merchants/{id}")
-    ResponseEntity fetchMerchant(@PathVariable("id") long id);
+    ResponseEntity<String> fetchMerchant(@PathVariable("id") long id);
 }
