@@ -1,0 +1,33 @@
+server:
+  port: 2020
+
+spring:
+
+  application:
+    name: gateway-service
+
+  cloud:
+    discovery:
+      locator.enabled: true
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+      routes:
+        - id: customer-service
+          uri: lb://customer-service
+          predicates:
+            - Path=/customer-service/**
+          filters:
+            - RewritePath=/customer-service/(?<segment>.*),/$\{segment}
+
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        instanceId: ${spring.application.name}:${random.value}
+        prefer-ip-address: true
+        healthCheckPath: /actuator/health
+        healthCheckInterval: 5s
