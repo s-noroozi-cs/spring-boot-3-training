@@ -13,7 +13,7 @@ public class RegistrationController {
         if(name == null || name.trim().length() < 2)
             throw new IllegalArgumentException("name is not valid");
 
-        if(mobile == null || !mobile.matches("0[1-9][0-9]{8}"))
+        if(mobile == null || !mobile.matches("0[1-9][0-9]{9}"))
             throw new IllegalArgumentException("mobile is not valid");
 
         return new Register(name, mobile);
