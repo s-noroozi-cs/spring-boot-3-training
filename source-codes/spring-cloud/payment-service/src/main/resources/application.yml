@@ -15,3 +15,17 @@ spring:
         prefer-ip-address: true
         healthCheckPath: /actuator/health
         healthCheckInterval: 5s
+
+
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      registerHealthIndicator: true
+      slidingWindowSize: 1
+      minimumNumberOfCalls: 1
+      slidingWindowType: TIME_BASED
+      permittedNumberOfCallsInHalfOpenState: 1
+      automaticTransitionFromOpenToHalfOpenEnabled: true
+      waitDurationInOpenState: 10s
+      failureRateThreshold: 10
+      eventConsumerBufferSize: 10
