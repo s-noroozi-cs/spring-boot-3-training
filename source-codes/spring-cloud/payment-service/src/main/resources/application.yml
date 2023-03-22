@@ -3,10 +3,28 @@ server:
 
 spring:
 
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
   application:
     name: payment-service
 
   cloud:
+
+    stream:
+      function:
+        definition: pkslowSource
+      bindings:
+        pkslowSource-out-0:
+          destination: pkslow-topic
+#        pkslowSink-in-0:
+#          destination: pkslow-topic
+#      poller:
+#        fixed-delay: 500
+
     consul:
       host: localhost
       port: 8500
