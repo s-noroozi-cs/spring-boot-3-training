@@ -1,0 +1,1 @@
+docker run --rm -d --name consul -p 8500:8500 consul:1.13.3
