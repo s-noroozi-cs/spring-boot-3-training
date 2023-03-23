@@ -3,24 +3,10 @@ server:
 
 spring:
 
-  rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
-
   application:
     name: merchant-service
 
   cloud:
-
-    stream:
-      function:
-        definition: pkslowSink
-      bindings:
-        pkslowSink-in-0:
-          destination: pkslow-topic
-          group: test
 
     consul:
       host: localhost
