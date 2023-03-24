@@ -23,7 +23,7 @@
         <module>merchant-service</module>
         <module>payment-service</module>
         <module>common-service</module>
-        <module>message-processor</module>
+        <module>notification-service</module>
     </modules>
 
     <properties>
