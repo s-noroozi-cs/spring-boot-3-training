@@ -1,25 +1,30 @@
 package com.springboot3.sample.services.payment.controller;
 
+import com.springboot3.sample.services.common.config.CustomKafkaBindingNames;
+import com.springboot3.sample.services.common.config.CustomMessageHeaders;
+import com.springboot3.sample.services.payment.model.PaymentInitRequest;
 import com.springboot3.sample.services.payment.service.CustomerClient;
 import com.springboot3.sample.services.payment.service.MerchantClient;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/payments")
+@RequiredArgsConstructor
 public class PaymentController {
 
-    private CustomerClient customerClient;
-    private MerchantClient merchantClient;
+    private final CustomerClient customerClient;
+    private final MerchantClient merchantClient;
+    private final StreamBridge streamBridge;
 
-    public PaymentController(CustomerClient customerClient
-            , MerchantClient merchantClient) {
-        this.customerClient = customerClient;
-        this.merchantClient = merchantClient;
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity fetchPayment(@PathVariable("id") long id) {
@@ -34,5 +39,19 @@ public class PaymentController {
                 , merchantClient.fetchMerchant(20).getBody());
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping
+    public ResponseEntity initPayment(HttpServletRequest request, @RequestBody PaymentInitRequest paymentInitRequest) {
+
+        String paymentTraceId = UUID.randomUUID().toString();
+
+        Message msg = MessageBuilder.withPayload(paymentInitRequest)
+                .setHeader(CustomMessageHeaders.PAYMENT_TRACE_ID,paymentTraceId)
+                .build();
+
+        streamBridge.send(CustomKafkaBindingNames.PAYMENT_NOTIFICATION,msg );
+
+        return ResponseEntity.created(URI.create(request.getRequestURL() + "/" + paymentTraceId)).build();
     }
 }

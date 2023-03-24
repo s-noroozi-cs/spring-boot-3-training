@@ -8,6 +8,19 @@ spring:
 
   cloud:
 
+    stream:
+
+      function:
+        definition: notification
+
+      bindings:
+        notification-out-0:
+          destination: notification
+
+      kafka:
+        binder:
+          brokers: 127.0.0.1:9092
+
     consul:
       host: localhost
       port: 8500

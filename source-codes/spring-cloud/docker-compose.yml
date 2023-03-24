@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+
+  consul:
+    image: consul:1.13.3
+    restart: always
+    container_name: consul
+    ports:
+      - 8500:8500
+
+  zookeeper:
+    image: zookeeper:3.7.0
+    restart: always
+    container_name: zookeeper
+      
+  kafka:
+    image: wurstmeister/kafka:2.13-2.8.1
+    container_name: kafka
+    restart: always
+    environment:
+       - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+       - KAFKA_LISTENERS=plaintext://:9092
+       - KAFKA_ADVERTISED_LISTENERS=plaintext://kafka:9092
+    depends_on:
+      - zookeeper
+    ports:
+      - 9092:9092
