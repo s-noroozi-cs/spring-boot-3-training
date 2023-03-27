@@ -11,6 +11,7 @@ import java.util.function.Consumer;
 @Slf4j
 public class NotificationListener {
 
+    @Bean
     public Consumer<Message> notification() {
         return message -> {
             log.info("Received new message " + message);
