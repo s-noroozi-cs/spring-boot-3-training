@@ -16,6 +16,9 @@ spring:
       bindings:
         notification-out-0:
           destination: notification
+          producer:
+            partition-key-expression: headers['partitionKey']
+            partition-count: 10
 
       kafka:
         binder:
