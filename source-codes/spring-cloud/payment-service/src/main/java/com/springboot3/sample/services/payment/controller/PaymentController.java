@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +49,7 @@ public class PaymentController {
 
         Message msg = MessageBuilder.withPayload(paymentInitRequest)
                 .setHeader(CustomMessageHeaders.PAYMENT_TRACE_ID,paymentTraceId)
-                .setHeader("partitionKey", UUID.randomUUID().toString())
+                //.setHeader(KafkaHeaders.KEY,UUID.randomUUID().toString().getBytes())
                 .build();
 
         streamBridge.send(CustomKafkaBindingNames.PAYMENT_NOTIFICATION,msg );
