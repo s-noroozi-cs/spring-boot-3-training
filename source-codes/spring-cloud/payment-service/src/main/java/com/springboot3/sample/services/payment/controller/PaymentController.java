@@ -48,6 +48,7 @@ public class PaymentController {
 
         Message msg = MessageBuilder.withPayload(paymentInitRequest)
                 .setHeader(CustomMessageHeaders.PAYMENT_TRACE_ID,paymentTraceId)
+                .setHeader("partitionKey", UUID.randomUUID().toString())
                 .build();
 
         streamBridge.send(CustomKafkaBindingNames.PAYMENT_NOTIFICATION,msg );
