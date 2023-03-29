@@ -49,7 +49,7 @@ public class PaymentController {
 
         Message msg = MessageBuilder.withPayload(paymentInitRequest)
                 .setHeader(CustomMessageHeaders.PAYMENT_TRACE_ID,paymentTraceId)
-                //.setHeader(KafkaHeaders.KEY,UUID.randomUUID().toString().getBytes())
+                .setHeader(KafkaHeaders.KEY,UUID.randomUUID().toString().getBytes())
                 .build();
 
         streamBridge.send(CustomKafkaBindingNames.PAYMENT_NOTIFICATION,msg );
