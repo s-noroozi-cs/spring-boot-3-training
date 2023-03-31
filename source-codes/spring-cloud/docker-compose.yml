@@ -2,6 +2,13 @@ version: '3'
 
 services:
 
+  zipkin:
+    image: openzipkin/zipkin:latest
+    restart: always
+    container_name: zipkin
+    ports:
+      - 9411:9411
+
   consul:
     image: consul:1.13.3
     restart: always
