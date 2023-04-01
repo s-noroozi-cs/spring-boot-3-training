@@ -1,26 +1,25 @@
 server:
-  port: 0
+  port: 4040
 
 spring:
 
   application:
-    name: notification-service
+    name: config-service
+
+  profiles:
+    active: native
+
+  security:
+    user:
+      name: config-user
+      password: config-pass
 
   cloud:
 
-    stream:
-
-      function:
-        definition: notification
-
-      bindings:
-        notification-in-0:
-          destination: notification
-          group: notification-consumer
-
-      kafka:
-        binder:
-          brokers: 127.0.0.1:9092
+    config:
+      server:
+        native:
+          search-locations: "classpath:/config"
 
     consul:
       host: localhost
@@ -29,4 +28,7 @@ spring:
         instanceId: ${spring.application.name}:${random.value}
         prefer-ip-address: true
         healthCheckPath: /actuator/health
+        health-check-headers:
+          # base64 ${spring.security.user.name}:${spring.security.user.password}
+          Authorization: "Basic Y29uZmlnLXVzZXI6Y29uZmlnLXBhc3M="
         healthCheckInterval: 5s
