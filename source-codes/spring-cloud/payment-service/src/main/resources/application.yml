@@ -1,10 +1,23 @@
 server:
   port: 0
 
+payment:
+  fee: 0.1
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh
+
 spring:
 
   application:
     name: payment-service
+
+  config:
+    import: "optional:configserver:http://config-user:config-pass@localhost:4040"
+
 
   cloud:
 
