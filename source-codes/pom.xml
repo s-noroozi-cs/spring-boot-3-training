@@ -29,6 +29,7 @@
         <module>spring-rest</module>
         <module>spring-graphql</module>
         <module>spring-cloud</module>
+        <module>spring-state-machine</module>
     </modules>
 
     <dependencyManagement>
