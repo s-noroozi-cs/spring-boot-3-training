@@ -57,8 +57,17 @@ public class StateMachineConfig
                 System.out.println("""
                         --- State change ---
                             from: %s
-                            to  :   %s
-                        """.formatted(from,to));
+                            to  : %s
+                        """.formatted(toString(from),toString(to)));
+            }
+
+            private String toString(State<States, Events> obj){
+                if(obj == null)
+                    return "null";
+                return "id: %s".formatted(obj.getId()
+                        .describeConstable()
+                        .get()
+                        .toString());
             }
         };
     }
