@@ -5,6 +5,7 @@ import com.springboot3.sample.services.common.config.CustomMessageHeaders;
 import com.springboot3.sample.services.payment.model.PaymentInitRequest;
 import com.springboot3.sample.services.payment.service.CustomerClient;
 import com.springboot3.sample.services.payment.service.MerchantClient;
+import com.springboot3.sample.services.payment.util.FeignFallbackUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.stream.function.StreamBridge;
@@ -36,8 +37,12 @@ public class PaymentController {
                 customer service: %s
                 merchant service: %s
                 """.formatted(id
-                , customerClient.fetchCustomer(10).getBody()
-                , merchantClient.fetchMerchant(20).getBody());
+                , FeignFallbackUtil.call(() ->
+                                customerClient.fetchCustomer(10).getBody()
+                        , () -> customerClient.fetchCustomerFallback(10).getBody())
+
+                , FeignFallbackUtil.call(() -> merchantClient.fetchMerchant(20).getBody(),
+                        () -> merchantClient.fetchMerchantFallback(20).getBody()));
 
         return ResponseEntity.ok(response);
     }
@@ -48,11 +53,11 @@ public class PaymentController {
         String paymentTraceId = UUID.randomUUID().toString();
 
         Message msg = MessageBuilder.withPayload(paymentInitRequest)
-                .setHeader(CustomMessageHeaders.PAYMENT_TRACE_ID,paymentTraceId)
-                .setHeader(KafkaHeaders.KEY,UUID.randomUUID().toString().getBytes())
+                .setHeader(CustomMessageHeaders.PAYMENT_TRACE_ID, paymentTraceId)
+                .setHeader(KafkaHeaders.KEY, UUID.randomUUID().toString().getBytes())
                 .build();
 
-        streamBridge.send(CustomKafkaBindingNames.PAYMENT_NOTIFICATION,msg );
+        streamBridge.send(CustomKafkaBindingNames.PAYMENT_NOTIFICATION, msg);
 
         return ResponseEntity.created(URI.create(request.getRequestURL() + "/" + paymentTraceId)).build();
     }

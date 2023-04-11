@@ -46,6 +46,9 @@ spring:
         healthCheckPath: /actuator/health
         healthCheckInterval: 5s
 
+feign:
+  hystrix:
+    enabled: true
 
 resilience4j.circuitbreaker:
   configs:
