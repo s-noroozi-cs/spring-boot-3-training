@@ -44,10 +44,28 @@ public class PaymentController {
                         () -> new MerchantClientFallback().fetchMerchant(id).getBody()));
     }
 
+    private String solutionB(long id) {
+        CustomerClient customerProxy = FeignFallbackUtil
+                .makeCustomerProxy(customerClient, new CustomerClientFallback());
+        MerchantClient merchantProxy = FeignFallbackUtil
+                .makeMerchantProxy(merchantClient, new MerchantClientFallback());
+
+        return """
+                --- response ---
+                payment service: fetch payment %d was successfully.
+                customer service: %s
+                merchant service: %s
+                """.formatted(id
+                , customerProxy.fetchCustomer(id).getBody()
+                , merchantProxy.fetchMerchant(id).getBody()
+        );
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity fetchPayment(@PathVariable("id") long id) {
-        return ResponseEntity.ok(solutionA(id));
+        //return ResponseEntity.ok(solutionA(id));
+        return ResponseEntity.ok(solutionB(id));
     }
 
     @PostMapping
