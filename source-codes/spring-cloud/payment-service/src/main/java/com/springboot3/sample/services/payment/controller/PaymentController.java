@@ -5,6 +5,8 @@ import com.springboot3.sample.services.common.config.CustomMessageHeaders;
 import com.springboot3.sample.services.payment.model.PaymentInitRequest;
 import com.springboot3.sample.services.payment.service.CustomerClient;
 import com.springboot3.sample.services.payment.service.MerchantClient;
+import com.springboot3.sample.services.payment.service.fallback.CustomerClientFallback;
+import com.springboot3.sample.services.payment.service.fallback.MerchantClientFallback;
 import com.springboot3.sample.services.payment.util.FeignFallbackUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -27,24 +29,25 @@ public class PaymentController {
     private final MerchantClient merchantClient;
     private final StreamBridge streamBridge;
 
-
-    @GetMapping("/{id}")
-    public ResponseEntity fetchPayment(@PathVariable("id") long id) {
-
-        var response = """
+    private String solutionA(long id) {
+        return """
                 --- response ---
                 payment service: fetch payment %d was successfully.
                 customer service: %s
                 merchant service: %s
                 """.formatted(id
                 , FeignFallbackUtil.call(() ->
-                                customerClient.fetchCustomer(10).getBody()
-                        , () -> customerClient.fetchCustomerFallback(10).getBody())
+                                customerClient.fetchCustomer(id).getBody()
+                        , () -> new CustomerClientFallback().fetchCustomer(id).getBody())
 
-                , FeignFallbackUtil.call(() -> merchantClient.fetchMerchant(20).getBody(),
-                        () -> merchantClient.fetchMerchantFallback(20).getBody()));
+                , FeignFallbackUtil.call(() -> merchantClient.fetchMerchant(id).getBody(),
+                        () -> new MerchantClientFallback().fetchMerchant(id).getBody()));
+    }
 
-        return ResponseEntity.ok(response);
+
+    @GetMapping("/{id}")
+    public ResponseEntity fetchPayment(@PathVariable("id") long id) {
+        return ResponseEntity.ok(solutionA(id));
     }
 
     @PostMapping
