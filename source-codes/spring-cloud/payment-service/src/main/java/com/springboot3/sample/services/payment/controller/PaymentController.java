@@ -29,6 +29,18 @@ public class PaymentController {
     private final MerchantClient merchantClient;
     private final StreamBridge streamBridge;
 
+    private String solution(long id) {
+        return """
+                --- response ---
+                payment service: fetch payment %d was successfully.
+                customer service: %s
+                merchant service: %s
+                """.formatted(id
+                , customerClient.fetchCustomer(id).getBody()
+                , merchantClient.fetchMerchant(id).getBody()
+        );
+    }
+
     private String solutionA(long id) {
         return """
                 --- response ---
@@ -36,12 +48,16 @@ public class PaymentController {
                 customer service: %s
                 merchant service: %s
                 """.formatted(id
-                , FeignFallbackUtil.call(() ->
-                                customerClient.fetchCustomer(id).getBody()
-                        , () -> new CustomerClientFallback().fetchCustomer(id).getBody())
+                , FeignFallbackUtil.call(
+                        () -> customerClient.fetchCustomer(id).getBody()
+                        , () -> new CustomerClientFallback().fetchCustomer(id).getBody()
+                )
 
-                , FeignFallbackUtil.call(() -> merchantClient.fetchMerchant(id).getBody(),
-                        () -> new MerchantClientFallback().fetchMerchant(id).getBody()));
+                , FeignFallbackUtil.call(
+                        () -> merchantClient.fetchMerchant(id).getBody(),
+                        () -> new MerchantClientFallback().fetchMerchant(id).getBody()
+                )
+        );
     }
 
     private String solutionB(long id) {
@@ -61,11 +77,55 @@ public class PaymentController {
         );
     }
 
+    private String solutionC(long id) {
+        CustomerClient customerProxy = FeignFallbackUtil.makeCustomerProxy(customerClient);
+        MerchantClient merchantProxy = FeignFallbackUtil.makeMerchantProxy(merchantClient);
+
+        return """
+                --- response ---
+                payment service: fetch payment %d was successfully.
+                customer service: %s
+                merchant service: %s
+                """.formatted(id
+                , customerProxy.fetchCustomer(id).getBody()
+                , merchantProxy.fetchMerchant(id).getBody()
+        );
+    }
+
+    private String solutionD(long id) {
+        CustomerClient customerProxy = FeignFallbackUtil
+                .makeProxy(CustomerClient.class, customerClient);
+        MerchantClient merchantProxy = FeignFallbackUtil
+                .makeProxy(MerchantClient.class, merchantClient);
+
+        return """
+                --- response ---
+                payment service: fetch payment %d was successfully.
+                customer service: %s
+                merchant service: %s
+                """.formatted(id
+                , customerProxy.fetchCustomer(id).getBody()
+                , merchantProxy.fetchMerchant(id).getBody()
+        );
+    }
+
 
     @GetMapping("/{id}")
-    public ResponseEntity fetchPayment(@PathVariable("id") long id) {
-        //return ResponseEntity.ok(solutionA(id));
-        return ResponseEntity.ok(solutionB(id));
+    public ResponseEntity fetchPayment(@PathVariable("id") long id,
+                                       @RequestHeader("x-solution") String solution) {
+        if ("A".equalsIgnoreCase(solution))
+            return ResponseEntity.ok(solutionA(id));
+
+        if ("B".equalsIgnoreCase(solution))
+            return ResponseEntity.ok(solutionB(id));
+
+        if ("C".equalsIgnoreCase(solution))
+            return ResponseEntity.ok(solutionC(id));
+
+        if ("D".equalsIgnoreCase(solution))
+            return ResponseEntity.ok(solutionD(id));
+
+        return ResponseEntity.ok(solution(id));
     }
 
     @PostMapping
