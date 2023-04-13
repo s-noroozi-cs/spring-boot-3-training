@@ -31,7 +31,9 @@ public class PaymentServiceApplicationTests {
 
     @BeforeEach
     void reset_circuit_breaker(){
-        circuitBreakerRegistry.getAllCircuitBreakers().forEach(CircuitBreaker::reset);
+        circuitBreakerRegistry
+                .getAllCircuitBreakers()
+                .forEach(CircuitBreaker::reset);
     }
 
     @BeforeAll

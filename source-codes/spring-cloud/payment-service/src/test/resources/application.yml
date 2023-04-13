@@ -60,8 +60,9 @@ resilience4j.circuitbreaker:
       minimumNumberOfCalls: 1
       slidingWindowType: TIME_BASED
       permittedNumberOfCallsInHalfOpenState: 1
-      automaticTransitionFromOpenToHalfOpenEnabled: true
-      waitDurationInOpenState: 10s
+      automaticTransitionFromOpenToHalfOpenEnabled: false
+      #support long time in debug mode in demo scenario
+      waitDurationInOpenState: 1000s
       failureRateThreshold: 10
       eventConsumerBufferSize: 10
 
