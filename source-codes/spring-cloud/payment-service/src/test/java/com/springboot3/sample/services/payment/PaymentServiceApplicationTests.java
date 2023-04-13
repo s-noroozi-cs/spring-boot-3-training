@@ -1,24 +1,38 @@
 package com.springboot3.sample.services.payment;
 
+import com.springboot3.sample.services.common.config.CustomHttpHeaders;
+import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
+import io.github.resilience4j.circuitbreaker.CircuitBreaker;
+import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 
 import java.net.URI;
+import java.net.UnknownHostException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.function.Consumer;
+import java.util.stream.IntStream;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Slf4j
 public class PaymentServiceApplicationTests {
     @LocalServerPort
     int port;
+
+    @Autowired
+    private CircuitBreakerRegistry circuitBreakerRegistry;
+
+    @BeforeEach
+    void reset_circuit_breaker(){
+        circuitBreakerRegistry.getAllCircuitBreakers().forEach(CircuitBreaker::reset);
+    }
 
     @BeforeAll
     static void notifyInfraRequirementForTest() {
@@ -50,7 +64,7 @@ public class PaymentServiceApplicationTests {
     void test_fallback() {
         HttpResponse response = makeRequest("---");
         log.info("without fallback solution, expected status 500");
-        Assertions.assertEquals(500, response.statusCode());
+        Assertions.assertEquals(503, response.statusCode());
 
         for (String solution : "A,B,C,D".split(",")) {
             response = makeRequest(solution);
@@ -60,14 +74,30 @@ public class PaymentServiceApplicationTests {
         }
     }
 
-    @RepeatedTest(10)
-    void test_circuit_breaker(){
-        //should be
-        HttpResponse response = makeRequest("---");
-        log.info("""
-                --- without fallback solution
-                status code: %d
-                body: %s
-                """.formatted(response.statusCode(),response.body()));
+    private void checkHttpResponse(HttpResponse response,
+                                   int statusCode,
+                                   String expectedExceptionName) {
+        String exceptionNameValue = response.headers()
+                .firstValue(CustomHttpHeaders.EXCEPTION_NAME)
+                .get();
+        Assertions.assertEquals(statusCode, response.statusCode());
+        Assertions.assertEquals(expectedExceptionName, exceptionNameValue);
+    }
+
+    @Test
+    void test_circuit_breaker_without_fallback() {
+        int serviceUnavailableStatusCode = 503;
+
+        //to reproduce call not permit, should be at least one fail
+        checkHttpResponse(makeRequest("---"),
+                serviceUnavailableStatusCode,
+                UnknownHostException.class.getName());
+
+        var loopCount = 10;
+        while (--loopCount > 0) {
+            checkHttpResponse(makeRequest("---"),
+                    serviceUnavailableStatusCode,
+                    CallNotPermittedException.class.getName());
+        }
     }
 }

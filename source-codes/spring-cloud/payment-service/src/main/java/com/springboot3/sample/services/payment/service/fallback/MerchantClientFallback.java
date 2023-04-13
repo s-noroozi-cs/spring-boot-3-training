@@ -7,7 +7,7 @@ public class MerchantClientFallback implements MerchantClient {
 
     @Override
     public ResponseEntity<String> fetchMerchant(long id){
-        return ResponseEntity.ok(
+        return makeFallbackResponse(
                 "--- fallback fetchMerchant, id: " + id + " ---");
     }
 }

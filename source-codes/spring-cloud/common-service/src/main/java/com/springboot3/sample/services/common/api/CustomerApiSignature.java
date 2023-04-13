@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-public interface CustomerApiSignature {
+public interface CustomerApiSignature extends CommonApiSignature{
 
     @GetMapping("/api/v1/customers/{id}")
     @CircuitBreaker(name = "customer-service")

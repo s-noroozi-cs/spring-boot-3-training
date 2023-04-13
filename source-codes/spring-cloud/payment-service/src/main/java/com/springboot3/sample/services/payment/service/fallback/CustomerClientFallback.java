@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 public class CustomerClientFallback implements CustomerClient {
     @Override
     public ResponseEntity<String> fetchCustomer(long id) {
-        return ResponseEntity.ok(
+        return makeFallbackResponse(
                 "--- fallback fetchCustomer, id: " + id + " ---");
     }
 }

@@ -45,6 +45,8 @@ spring:
         prefer-ip-address: true
         healthCheckPath: /actuator/health
         healthCheckInterval: 5s
+        tags: test
+        default-query-tag: test
 
 feign:
   hystrix:
@@ -57,11 +59,11 @@ resilience4j.circuitbreaker:
       slidingWindowSize: 1
       minimumNumberOfCalls: 1
       slidingWindowType: TIME_BASED
-      permittedNumberOfCallsInHalfOpenState: 0
-      automaticTransitionFromOpenToHalfOpenEnabled: false
+      permittedNumberOfCallsInHalfOpenState: 1
+      automaticTransitionFromOpenToHalfOpenEnabled: true
       waitDurationInOpenState: 10s
-      failureRateThreshold: 1
-      eventConsumerBufferSize: 1
+      failureRateThreshold: 10
+      eventConsumerBufferSize: 10
 
 
 management.tracing.sampling.probability: 1.0
