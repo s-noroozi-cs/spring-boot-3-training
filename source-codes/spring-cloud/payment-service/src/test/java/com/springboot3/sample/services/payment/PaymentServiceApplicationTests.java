@@ -4,6 +4,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -25,7 +26,7 @@ public class PaymentServiceApplicationTests {
     }
 
     @SneakyThrows
-    private HttpResponse makeRequest(String solution) {
+    private HttpResponse<String> makeRequest(String solution) {
         URI uri = URI.create(
                 "http://localhost:%d/api/v1/payments/123"
                         .formatted(port));
@@ -57,5 +58,16 @@ public class PaymentServiceApplicationTests {
                     .formatted(solution));
             Assertions.assertEquals(200, response.statusCode());
         }
+    }
+
+    @RepeatedTest(10)
+    void test_circuit_breaker(){
+        //should be
+        HttpResponse response = makeRequest("---");
+        log.info("""
+                --- without fallback solution
+                status code: %d
+                body: %s
+                """.formatted(response.statusCode(),response.body()));
     }
 }
