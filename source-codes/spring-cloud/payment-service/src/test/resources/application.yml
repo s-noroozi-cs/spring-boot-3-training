@@ -48,9 +48,6 @@ spring:
         tags: test
         default-query-tag: test
 
-feign:
-  hystrix:
-    enabled: true
 
 resilience4j.circuitbreaker:
   configs:
