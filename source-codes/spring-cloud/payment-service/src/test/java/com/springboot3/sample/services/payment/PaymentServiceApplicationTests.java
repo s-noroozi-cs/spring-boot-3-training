@@ -110,13 +110,14 @@ public class PaymentServiceApplicationTests {
 
     @Test
     void test_circuit_breaker_with_fallback() {
-        String solution = solutions.stream().findAny().get();
+        String solution = "x";
+                //solutions.stream().findAny().get();
         HttpResponse response = makeRequest(solution);
         Assertions.assertEquals(200,response.statusCode());
 
         var loopCount = 10;
         while (--loopCount > 0) {
-            solution = solutions.stream().findAny().get();
+            //solution = solutions.stream().findAny().get();
             response = makeRequest(solution);
             Assertions.assertEquals(503,response.statusCode());
         }

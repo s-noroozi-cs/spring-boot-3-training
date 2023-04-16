@@ -92,6 +92,23 @@ public class PaymentController {
         );
     }
 
+    private String solutionX(long id) {
+        CustomerClient customerProxy = FeignFallbackUtil
+                .makeProxyWithCircuitBreaker(CustomerClient.class, customerClient);
+        MerchantClient merchantProxy = FeignFallbackUtil
+                .makeProxyWithCircuitBreaker(MerchantClient.class, merchantClient);
+
+        return """
+                --- response ---
+                payment service: fetch payment %d was successfully.
+                customer service: %s
+                merchant service: %s
+                """.formatted(id
+                , customerProxy.fetchCustomer(id).getBody()
+                , merchantProxy.fetchMerchant(id).getBody()
+        );
+    }
+
     private String solutionD(long id) {
         CustomerClient customerProxy = FeignFallbackUtil
                 .makeProxy(CustomerClient.class, customerClient);
@@ -124,6 +141,9 @@ public class PaymentController {
 
         if ("D".equalsIgnoreCase(solution))
             return ResponseEntity.ok(solutionD(id));
+
+        if("X".equalsIgnoreCase(solution))
+            return ResponseEntity.ok(solutionX(id));
 
         return ResponseEntity.ok(solution(id));
     }
