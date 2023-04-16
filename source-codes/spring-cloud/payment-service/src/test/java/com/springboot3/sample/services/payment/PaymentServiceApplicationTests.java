@@ -17,12 +17,17 @@ import java.net.UnknownHostException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Slf4j
 public class PaymentServiceApplicationTests {
+    private List<String> solutions = Arrays.stream(
+                    "A,B,C,D".split(","))
+            .toList();
     @LocalServerPort
     int port;
 
@@ -30,7 +35,7 @@ public class PaymentServiceApplicationTests {
     private CircuitBreakerRegistry circuitBreakerRegistry;
 
     @BeforeEach
-    void reset_circuit_breaker(){
+    void reset_circuit_breaker() {
         circuitBreakerRegistry
                 .getAllCircuitBreakers()
                 .forEach(CircuitBreaker::reset);
@@ -68,7 +73,7 @@ public class PaymentServiceApplicationTests {
         log.info("without fallback solution, expected status 500");
         Assertions.assertEquals(503, response.statusCode());
 
-        for (String solution : "A,B,C,D".split(",")) {
+        for (String solution : solutions) {
             response = makeRequest(solution);
             log.info("with fallback solution %s, expected status 200"
                     .formatted(solution));
@@ -100,6 +105,20 @@ public class PaymentServiceApplicationTests {
             checkHttpResponse(makeRequest("---"),
                     serviceUnavailableStatusCode,
                     CallNotPermittedException.class.getName());
+        }
+    }
+
+    @Test
+    void test_circuit_breaker_with_fallback() {
+        String solution = solutions.stream().findAny().get();
+        HttpResponse response = makeRequest(solution);
+        Assertions.assertEquals(200,response.statusCode());
+
+        var loopCount = 10;
+        while (--loopCount > 0) {
+            solution = solutions.stream().findAny().get();
+            response = makeRequest(solution);
+            Assertions.assertEquals(503,response.statusCode());
         }
     }
 }
