@@ -14,6 +14,7 @@ import org.springframework.statemachine.listener.StateMachineListenerAdapter;
 import org.springframework.statemachine.state.State;
 
 import java.util.EnumSet;
+import java.util.Optional;
 
 @Configuration
 @EnableStateMachine
@@ -62,12 +63,10 @@ public class StateMachineConfig
             }
 
             private String toString(State<States, Events> obj){
-                if(obj == null)
-                    return "null";
-                return "id: %s".formatted(obj.getId()
-                        .describeConstable()
-                        .get()
-                        .toString());
+                return Optional.ofNullable(obj)
+                        .map(State::getId)
+                        .map(String::valueOf)
+                        .orElse("[EMPTY]");
             }
         };
     }
