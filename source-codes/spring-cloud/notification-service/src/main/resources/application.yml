@@ -8,14 +8,16 @@ spring:
 
   cloud:
 
+    function:
+      definition: notification
+
     stream:
 
-      function:
-        definition: notification
 
       bindings:
         notification-in-0:
           destination: notification
+          concurrency: 1
           group: notification-consumer
 
       kafka:
