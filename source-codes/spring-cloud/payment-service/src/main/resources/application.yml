@@ -36,7 +36,7 @@ spring:
 
       kafka:
         binder:
-          brokers: 127.0.0.1:9092
+          brokers: kafka:9092
 
     consul:
       host: localhost
@@ -61,6 +61,6 @@ resilience4j.circuitbreaker:
       eventConsumerBufferSize: 10
 
 
-management.tracing.sampling.probability: 0.0
+management.tracing.sampling.probability: 1.0
 
 logging.pattern.level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
