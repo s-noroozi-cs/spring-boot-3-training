@@ -18,4 +18,6 @@ session 09	2.0 hours		20.5 - 22.5		wed 19 apr 2023 slide: 37
 
 session 10  1.5 hours		16.0 - 17.5 	mon 01 may 2023 slide: 40
 
-total (20): 18.5
+session 11	1.5 hours		16.0 - 17.5 	wed 03 may 2023 slide: 43
+
+total (20): 20.0
